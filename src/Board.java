@@ -1,3 +1,5 @@
+import java.util.Map;
+import java.util.HashMap;
 import java.security.SecureRandom;
 
 public class Board implements ISubject{
@@ -7,13 +9,14 @@ public class Board implements ISubject{
     private IObserver userBoard = null;
     private int height;
     private int width;
+    private boolean playable = true;
+    private Map<String,Integer> markedCells = new HashMap<>();
 
     public Board(int height, int width, int mines) {
         this.height = height;
         this.width = width;
         insertMines(height, width, mines);
         insertAdjacentValues(height, width);
-        print();
     }
 
     private void insertMines(int height, int width, int mines) {
@@ -27,7 +30,7 @@ public class Board implements ISubject{
 
         for(int index = 0; index < length; index++) 
             positions[index] = index;
-        
+
         for(int index = length-1; index > 0; index--) {
             rand = sr.nextInt(index);
             aux = positions[index];
@@ -59,45 +62,65 @@ public class Board implements ISubject{
         }
     }
 
-    public void uncover(int row, int col){
+    public boolean uncover(int row, int col){
         row = row-1;
         col = col-1;
         int cellValue;
+
+        if(isMine(row, col)){
+            revealMines();
+        }
+
         if(!isMine(row, col) && !isUncovered(row, col) && !isMarked(row, col)){
             cellValue = this.grid[row][col];
             if(cellValue > 0){
                 notify(row, col, cellValue);
-                this.grid[row][col] = CellStatus.UNCOVERED.getValue();                
+                this.grid[row][col] = CellStatus.UNCOVERED.getValue();
+                return true;               
             }else if(cellValue == 0){
                 notify(row, col, cellValue);
                 this.grid[row][col] = CellStatus.UNCOVERED.getValue(); 
-                ////repaint
-                //System.out.println("Repintando Board");
-                //print();
-                /////////// 
                 revealAdjacents(row,col);
             }
+        }         
+        return false;
+    }
+
+    public boolean mark(int row, int col){
+        String index;
+        int value;
+        row = row-1;
+        col = col-1;
+
+        if(!isMarked(row, col) && !isUncovered(row,col)){
+            index = ""+row+col;
+            value = this.grid[row][col];
+            this.markedCells.put(index, value);
+            this.grid[row][col] = CellStatus.MARKED.getValue();
+            value = value = this.grid[row][col];
+            notify(row, col, value);
+            return true;
         }
-        ////////////////////////// TO DO            
-        //if(isMine(row, col))
-        //    revealMines();
+        return false;
     }
 
-    //public void mark(int row, int col){
-        
-    //}
+    public boolean unmark(int row, int col){
+        String index;
+        int value;
+        row = row-1;
+        col = col-1;
 
-    private boolean isMarked(int row, int col){
-        return this.grid[row][col] == CellStatus.MARKED.getValue();
+        index = ""+row+col;
+        if(this.markedCells.containsKey(index)){
+            value = this.markedCells.get(index);
+            this.grid[row][col] = value;
+            value = CellStatus.UNMARKED.getValue();
+            notify(row, col, value);
+            this.markedCells.remove(index);
+            return true;
+        }
+        return false;
     }
-
-    private boolean isUncovered(int row, int col){
-        return this.grid[row][col] == CellStatus.UNCOVERED.getValue();
-    }
-
-    //private void revealMines(){
-
-    //}
 
     private void revealAdjacents(int row, int col){
         int value;
@@ -112,10 +135,6 @@ public class Board implements ISubject{
                             notify(subrow, subcol, value);
                             this.grid[subrow][subcol] = CellStatus.UNCOVERED
                                 .getValue();
-                            ////repaint
-                            //System.out.println("Repintando Board");
-                            //print();
-                            ///////////
                             revealAdjacents(subrow, subcol);
                         }
                             
@@ -131,6 +150,25 @@ public class Board implements ISubject{
         }
     }
 
+    private void revealMines(){
+        for(int row = 0; row < this.height; row++){
+            for(int col = 0; col<this.width; col++){
+                if(this.grid[row][col] == this.MINE)
+                    notify(row, col, this.MINE);
+            }
+        }
+        setBoardStatusTo(false);
+    }
+
+
+    private boolean isMarked(int row, int col){
+        return this.grid[row][col] == CellStatus.MARKED.getValue();
+    }
+
+    private boolean isUncovered(int row, int col){
+        return this.grid[row][col] == CellStatus.UNCOVERED.getValue();
+    }
+
     private boolean isMine(int row, int col) {
         return this.grid[row][col] == this.MINE;
     }
@@ -142,23 +180,28 @@ public class Board implements ISubject{
 
     @Override
     public void notify(int row, int col, int value){
-        String strValue = value == 0 ? "-" : ""+value;
+        String strValue = (value == 0) ? "-" : 
+                          (value == this.MINE) ? "+" :
+                          (value == CellStatus.MARKED.getValue()) ? "P" :
+                          (value == CellStatus.UNMARKED.getValue()) ? "." :
+                            ""+value;
         this.userBoard.update(row, col, strValue);
     }
 
-    public void print(){
-        System.out.print("*******************************\n ");
-        for(int x=0; x<width; x++)
-            System.out.printf("  %3s", String.valueOf(x+1));
-        System.out.println();
-        for(int row=0; row<height; row++){
-            System.out.printf("%s", ""+(row+1));
-            for(int col=0; col<width; col++){
-                System.out.printf("  %3s",""+this.grid[row][col]);
-            }
-            System.out.println();
-        }
-        System.out.print("\n*******************************\n");
+    private void setBoardStatusTo(boolean status){
+        setPlayable(status);
+    }
+    
+    public boolean getBoardStatus(){
+        return getPlayable();
+    }
+
+    private void setPlayable(boolean p){
+        this.playable = p;
+    }
+
+    public boolean getPlayable(){
+        return this.playable;
     }
 
 }

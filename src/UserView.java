@@ -24,18 +24,18 @@ public class UserView implements IObserver {
     }
 
     public void paint(){
-        System.out.print("*******************************\n ");
+        System.out.print("   ");
         for(int x=0; x<width; x++)
             System.out.printf("  %3s", String.valueOf(x+1));
-        System.out.println();
+        System.out.println("\n   --------------------------");
         for(int row=0; row<height; row++){
-            System.out.printf("%s", ""+(row+1));
+            System.out.printf("%s |", ""+(row+1));
             for(int col=0; col<width; col++){
                 System.out.printf("  %3s",""+this.grid[row][col]);
             }
             System.out.println();
         }
-        System.out.print("\n*******************************\n");
+        System.out.print("\n\n");
     }
 
 }
