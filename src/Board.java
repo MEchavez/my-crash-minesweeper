@@ -70,7 +70,11 @@ public class Board implements ISubject{
                 this.grid[row][col] = CellStatus.UNCOVERED.getValue();                
             }else if(cellValue == 0){
                 notify(row, col, cellValue);
-                this.grid[row][col] = CellStatus.UNCOVERED.getValue();  
+                this.grid[row][col] = CellStatus.UNCOVERED.getValue(); 
+                ////repaint
+                //System.out.println("Repintando Board");
+                //print();
+                /////////// 
                 revealAdjacents(row,col);
             }
         }
@@ -99,15 +103,19 @@ public class Board implements ISubject{
         int value;
         for(int subrow=row-1; subrow<row+2; subrow++){
             for(int subcol=col-1; subcol<col+2; subcol++){
-                if(subrow >= 0 && subrow < height && subcol >= 0 &&
-                    subcol < width && !(subrow == row && subcol == col)){
+                if(subrow >= 0 && subrow < this.height && subcol >= 0 &&
+                    subcol < this.width && !(subrow == row && subcol == col)){
                         
                         value = this.grid[subrow][subcol];
 
                         if(value == 0){
-                            notify(row, col, value);
+                            notify(subrow, subcol, value);
                             this.grid[subrow][subcol] = CellStatus.UNCOVERED
                                 .getValue();
+                            ////repaint
+                            //System.out.println("Repintando Board");
+                            //print();
+                            ///////////
                             revealAdjacents(subrow, subcol);
                         }
                             

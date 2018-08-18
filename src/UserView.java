@@ -11,7 +11,6 @@ public class UserView implements IObserver {
         b.attach(this);
         this.height = height;
         this.width = width;
-        paint();
     }
 
     private void cleanBuild(int height, int width){
