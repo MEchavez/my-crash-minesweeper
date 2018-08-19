@@ -5,7 +5,7 @@ The game is developed in Java 8, the JDK version i used was open JDK 8u171
 
 My crash minesweeper can be used in the following two forms:
 * It can be compiled from source i.e `javac src/*.java`, then run the Main class i.e `java src/Main`
-* Alternatively a Docker image can be builded making `cd my_crash_minesweeper` and running `docker build . -t mycrashMinesweeper` and started `docker run -it mycrashMinesweeper`, in this way the container run as a binary
+* Alternatively a Docker image can be builded making `cd my_crash_minesweeper` and running `docker build . -t mycrashminesweeper` and started `docker run -it mycrashminesweeper`, in this way the container run as a binary
 
 ## Description:
 
