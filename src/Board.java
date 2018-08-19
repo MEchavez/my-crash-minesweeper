@@ -9,8 +9,8 @@ public class Board implements ISubject{
     private IObserver userBoard = null;
     private int height;
     private int width;
+    private int mines;
     private boolean playable;
-    //utilizar
     private boolean complete;
     private int uncoveredCells;
     private Map<String,Integer> markedCells;
@@ -18,6 +18,7 @@ public class Board implements ISubject{
     public Board(int height, int width, int mines) {
         this.height = height;
         this.width = width;
+        this.mines = mines;
         this.uncoveredCells = 0;
         this.playable = true;
         this.markedCells = new HashMap<>();
@@ -84,11 +85,13 @@ public class Board implements ISubject{
                 notify(row, col, cellValue);
                 this.grid[row][col] = CellStatus.UNCOVERED.getValue();
                 setUncoveredCells(getUncoveredCells() + 1);
+                updateCompleteness();
                 return true;               
             }else if(cellValue == 0){
                 notify(row, col, cellValue);
                 this.grid[row][col] = CellStatus.UNCOVERED.getValue();
                 setUncoveredCells(getUncoveredCells() + 1);
+                updateCompleteness();
                 revealAdjacents(row,col);
                 return true;
             }
@@ -146,6 +149,7 @@ public class Board implements ISubject{
                             this.grid[subrow][subcol] = CellStatus.UNCOVERED
                                 .getValue();
                             setUncoveredCells(getUncoveredCells() + 1);
+                            updateCompleteness();
                             revealAdjacents(subrow, subcol);
                         }
                             
@@ -154,9 +158,9 @@ public class Board implements ISubject{
                             notify(subrow, subcol, value);
                             this.grid[subrow][subcol] = CellStatus.UNCOVERED
                                 .getValue();   
-                            setUncoveredCells(getUncoveredCells() + 1);             
-                        }                        
-
+                            setUncoveredCells(getUncoveredCells() + 1);
+                            updateCompleteness();         
+                        }                       
                 }
             }
         }
@@ -183,6 +187,15 @@ public class Board implements ISubject{
 
     private boolean isMine(int row, int col) {
         return this.grid[row][col] == this.MINE;
+    }
+
+    private void updateCompleteness(){
+        int totalCells = this.height * this.width;
+        if(getUncoveredCells() + this.mines == totalCells){
+            setBoardStatusTo(false);
+            setCompleteTo(true);
+        }
+            
     }
 
     @Override 
@@ -222,6 +235,14 @@ public class Board implements ISubject{
 
     public int getUncoveredCells(){
         return this.uncoveredCells;
+    }
+
+    private void setCompleteTo(boolean c){
+        this.complete = c;
+    }
+
+    public boolean getComplete(){
+        return this.complete;
     }
 
 }

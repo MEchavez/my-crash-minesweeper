@@ -33,6 +33,10 @@ public class Game {
         setStatus(status);
     }
 
+    public boolean isComplete(){
+        return this.board.getComplete();
+    }
+
     public void printBoard(){
         this.uview.paint();
     }

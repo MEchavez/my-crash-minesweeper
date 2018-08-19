@@ -12,6 +12,10 @@ public class Main{
         Pattern pattern = Pattern.compile("(\\d)+ (\\d)+ [UMR]");
         Matcher matcher;
         String[] inputTokens;
+        final String UNCOVER = "U";
+        final String UNMARK = "P";
+        final String MARK = "M";
+
         //ask for height, width and mines before create new game
         Game g = new Game(5, 5, 3);
         g.printBoard();
@@ -27,11 +31,18 @@ public class Main{
             col = Integer.parseInt(inputTokens[1]);
             operation = inputTokens[2];
             System.out.println();
-            g.uncoverCell(row, col);            
+            switch(operation){
+                case UNCOVER:
+                    g.uncoverCell(row, col);            
+                    break;
+            }
+            
         }
-        if(g.getStatus() == GameStatus.DEFEAT.getValue())
-            System.out.println("Game Over :(");
-
+        
+        if(g.isComplete())
+            System.out.println("Congratulations! you win :)\n");
+        else if(g.getStatus() == GameStatus.DEFEAT.getValue())
+            System.out.println("Game Over :(\n");
 
     }
 }
