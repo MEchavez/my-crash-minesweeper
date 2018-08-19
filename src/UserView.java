@@ -27,7 +27,10 @@ public class UserView implements IObserver {
         System.out.print("   ");
         for(int x=0; x<width; x++)
             System.out.printf("  %3s", String.valueOf(x+1));
-        System.out.println("\n   --------------------------");
+        System.out.print("\n    ");
+        for(int x=0; x<width*5; x++)
+            System.out.print("-");
+        System.out.println();
         for(int row=0; row<height; row++){
             System.out.printf("%s |", ""+(row+1));
             for(int col=0; col<width; col++){
