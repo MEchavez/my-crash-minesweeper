@@ -52,4 +52,4 @@ Next move >> 5 2 U
 ```
 With the above input the user tells the game he/she wants to UNCOVER the cell in the row 5 col 2. If any typo is maked or any extra space is added the game will ignore the input and will ask again for a valid move. The same applies for the other to moves `M` and `R`
 
-The game finish when the user uncovers a mine or if he/she uncovers all safe cells without uncover a mine, you should remember you can't win if there is safe cells marked with a flag. When the game ends the program will exit, so for a new game the user should run the program again.
+The game finish when the user uncovers a mine or if he/she uncovers all safe cells without uncover a mine, you should remember you can't win if there is safe cells marked with a flag. When the game ends the program will exit, so for a new game the user should run the program again or start the docker container again.
