@@ -25,12 +25,14 @@ public class Main{
             System.out.print("number of <rows> <cols> <mines>\n>> ");
             userInput = sc.nextLine();
             matcher = settingsPattern.matcher(userInput);
-        }while(!matcher.matches());
-        
-        inputTokens = userInput.split(" ");
-        height = Integer.parseInt(inputTokens[0]);
-        width = Integer.parseInt(inputTokens[1]);
-        mines = Integer.parseInt(inputTokens[2]);
+            match = matcher.matches();
+            if(match){
+                inputTokens = userInput.split(" ");
+                height = Integer.parseInt(inputTokens[0]);
+                width = Integer.parseInt(inputTokens[1]);
+                mines = Integer.parseInt(inputTokens[2]);
+            }
+        }while(!match || mines >= height * width);    
 
         Game g = new Game(height, width, mines);
         System.out.println();
