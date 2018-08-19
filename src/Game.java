@@ -19,6 +19,22 @@ public class Game {
         return false;
     }
 
+    public boolean markCell(int row, int col){
+        if(this.board.markCell(row, col)){
+            this.uview.paint();
+            return true;
+        }            
+        return false;
+    }
+
+    public boolean unmarkCell(int row, int col){
+        if(this.board.unmarkCell(row, col)){
+            this.uview.paint();
+            return true;
+        }            
+        return false;
+    }
+
     public int getStatus(){
         return this.gameStatus;
     }

@@ -15,7 +15,7 @@ public class Main{
         Matcher matcher;
         String[] inputTokens;
         final String UNCOVER = "U";
-        final String UNMARK = "P";
+        final String UNMARK = "R";
         final String MARK = "M";
         boolean match;
 
@@ -55,7 +55,16 @@ public class Main{
             System.out.println();
             switch(operation){
                 case UNCOVER:
-                    g.uncoverCell(row, col);            
+                    if(!g.uncoverCell(row, col))
+                        System.out.println("Can't uncover that cell");
+                    break;
+                case MARK:
+                    if(!g.markCell(row, col))
+                        System.out.println("Can't mark that cell");
+                    break;
+                case UNMARK:
+                    if(!g.unmarkCell(row, col))
+                        System.out.println("Can't unmark that cell");
                     break;
             }
             
