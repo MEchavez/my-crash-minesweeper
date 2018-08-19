@@ -43,7 +43,7 @@ Next move >>
 The user can choose between three moves:
 > U - for uncover the cell
 
-> M - for mark the cell with a flag like (in this way 'P', c'mon it's a flag, use your imagination)
+> M - for mark the cell with a flag (in this way 'P', c'mon it's a flag, use your imagination)
 
 > R - for remove a flag from a marked cell
 
