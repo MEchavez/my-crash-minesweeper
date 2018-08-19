@@ -25,6 +25,8 @@ Then you should type something like this (or the values you want):
 
 The above line means you want to create a game with 8 rows, 15 columns and 10 mines. If the user makes a typo or added some extra space between numbers the game will ask again for the values until the input match the pattern.
 
+> note: mines number must be greater than 0
+
 Passed the first input the game will start, and an empty board will be shown in the screen, followed by a prompt asking you for the next move you want to do.
 
 ```

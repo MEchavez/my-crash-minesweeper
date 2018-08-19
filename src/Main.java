@@ -32,7 +32,7 @@ public class Main{
                 width = Integer.parseInt(inputTokens[1]);
                 mines = Integer.parseInt(inputTokens[2]);
             }
-        }while(!match || mines >= height * width);    
+        }while(!match || mines >= height * width || mines <= 0);    
 
         Game g = new Game(height, width, mines);
         System.out.println();
