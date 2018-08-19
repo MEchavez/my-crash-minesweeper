@@ -9,12 +9,16 @@ public class Board implements ISubject{
     private IObserver userBoard = null;
     private int height;
     private int width;
-    private boolean playable = true;
-    private Map<String,Integer> markedCells = new HashMap<>();
+    private boolean playable;
+    private int uncoveredCells;
+    private Map<String,Integer> markedCells;
 
     public Board(int height, int width, int mines) {
         this.height = height;
         this.width = width;
+        this.uncoveredCells = 0;
+        this.playable = true;
+        this.markedCells = new HashMap<>();
         insertMines(height, width, mines);
         insertAdjacentValues(height, width);
     }
@@ -76,17 +80,19 @@ public class Board implements ISubject{
             if(cellValue > 0){
                 notify(row, col, cellValue);
                 this.grid[row][col] = CellStatus.UNCOVERED.getValue();
+                setUncoveredCells(getUncoveredCells() + 1);
                 return true;               
             }else if(cellValue == 0){
                 notify(row, col, cellValue);
-                this.grid[row][col] = CellStatus.UNCOVERED.getValue(); 
+                this.grid[row][col] = CellStatus.UNCOVERED.getValue();
+                setUncoveredCells(getUncoveredCells() + 1);
                 revealAdjacents(row,col);
             }
         }         
         return false;
     }
 
-    public boolean mark(int row, int col){
+    public boolean markCell(int row, int col){
         String index;
         int value;
         row = row-1;
@@ -104,7 +110,7 @@ public class Board implements ISubject{
         return false;
     }
 
-    public boolean unmark(int row, int col){
+    public boolean unmarkCell(int row, int col){
         String index;
         int value;
         row = row-1;
@@ -135,6 +141,7 @@ public class Board implements ISubject{
                             notify(subrow, subcol, value);
                             this.grid[subrow][subcol] = CellStatus.UNCOVERED
                                 .getValue();
+                            setUncoveredCells(getUncoveredCells() + 1);
                             revealAdjacents(subrow, subcol);
                         }
                             
@@ -142,7 +149,8 @@ public class Board implements ISubject{
                             value = this.grid[subrow][subcol];
                             notify(subrow, subcol, value);
                             this.grid[subrow][subcol] = CellStatus.UNCOVERED
-                                .getValue();                
+                                .getValue();   
+                            setUncoveredCells(getUncoveredCells() + 1);             
                         }                        
 
                 }
@@ -200,8 +208,16 @@ public class Board implements ISubject{
         this.playable = p;
     }
 
-    public boolean getPlayable(){
+    private boolean getPlayable(){
         return this.playable;
+    }
+
+    private void setUncoveredCells(int cs){
+        this.uncoveredCells = cs;
+    }
+
+    public int getUncoveredCells(){
+        return this.uncoveredCells;
     }
 
 }
