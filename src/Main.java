@@ -20,7 +20,7 @@ public class Main{
         boolean match;
 
         do{
-            System.out.println("\nEnter you game settings in the" 
+            System.out.println("\nEnter the game settings in the" 
                 + " following order:");
             System.out.print("number of <rows> <cols> <mines>\n>> ");
             userInput = sc.nextLine();
