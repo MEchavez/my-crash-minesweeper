@@ -10,6 +10,8 @@ public class Board implements ISubject{
     private int height;
     private int width;
     private boolean playable;
+    //utilizar
+    private boolean complete;
     private int uncoveredCells;
     private Map<String,Integer> markedCells;
 
@@ -72,7 +74,8 @@ public class Board implements ISubject{
         int cellValue;
 
         if(isMine(row, col)){
-            revealMines();
+            revealMines();            
+            return true;
         }
 
         if(!isMine(row, col) && !isUncovered(row, col) && !isMarked(row, col)){
@@ -87,6 +90,7 @@ public class Board implements ISubject{
                 this.grid[row][col] = CellStatus.UNCOVERED.getValue();
                 setUncoveredCells(getUncoveredCells() + 1);
                 revealAdjacents(row,col);
+                return true;
             }
         }         
         return false;

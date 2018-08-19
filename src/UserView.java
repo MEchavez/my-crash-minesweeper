@@ -35,7 +35,6 @@ public class UserView implements IObserver {
             }
             System.out.println();
         }
-        System.out.print("\n\n");
     }
 
 }
